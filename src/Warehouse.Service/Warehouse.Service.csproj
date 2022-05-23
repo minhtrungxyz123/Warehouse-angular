@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Warehouse.Common\Warehouse.Common.csproj" />
     <ProjectReference Include="..\Warehouse.Data\Warehouse.Data.csproj" />
     <ProjectReference Include="..\Warehouse.Model\Warehouse.Model.csproj" />

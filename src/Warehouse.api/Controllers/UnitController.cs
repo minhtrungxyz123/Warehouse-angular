@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using Warehouse.Common;
 using Warehouse.Model.Unit;
 using Warehouse.Service;
@@ -7,6 +9,7 @@ namespace Warehouse.api.Controllers
 {
     [Route("api/unit")]
     [ApiController]
+    [Authorize("Bearer")]
     public class UnitController : ControllerBase
     {
         #region Fields

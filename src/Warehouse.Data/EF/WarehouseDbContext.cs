@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Warehouse.Data.Configuration;
 using Warehouse.Data.Entities;
@@ -6,7 +7,7 @@ using Warehouse.Data.UnitOfWork;
 
 namespace Warehouse.Data.EF
 {
-    public class WarehouseDbContext : DbContext, IUnitOfWork
+    public class WarehouseDbContext : IdentityDbContext<User>,  IUnitOfWork 
     {
         public WarehouseDbContext(DbContextOptions options) : base(options)
         {
@@ -14,7 +15,10 @@ namespace Warehouse.Data.EF
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             //Configure using Fluent API
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new AuditConfiguration());
             modelBuilder.ApplyConfiguration(new AuditCouncilConfiguration());
             modelBuilder.ApplyConfiguration(new AuditDetailConfiguration());
