@@ -43,7 +43,7 @@ namespace Warehouse.api.IdentityServer
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.OfflineAccess,
-                        "api.warehouse"
+                        "api.waerhouse"
                     }
                  },
                 new Client

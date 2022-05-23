@@ -1,7 +1,6 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -11,8 +10,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Warehouse.api.IdentityServer;
 using Warehouse.Data.EF;
 using Warehouse.Data.Entities;
@@ -33,11 +30,11 @@ namespace Warehouse.api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //1. Setup entity framework
+            //Setup entity framework
             services.AddDbContext<WarehouseDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("WarehouseDatabase")));
-            //2. Setup idetntity
+            // Setup idetntity
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<WarehouseDbContext>();
 
@@ -100,16 +97,19 @@ namespace Warehouse.api
                 });
             });
 
-            #region Service
+            //Add SeedingData
             services.AddTransient<DbInitializer>();
+
+            #region Add Service
+
             services.AddTransient<IEmailSender, EmailSenderService>();
-            services.AddTransient<IVendorService, VendorService>();
+            services.AddTransient<IUnitService, UnitService>();
 
             #endregion
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Knowledge Space API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Warehouse API", Version = "v1" });
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
@@ -167,7 +167,7 @@ namespace Warehouse.api
             app.UseSwaggerUI(c =>
             {
                 c.OAuthClientId("swagger");
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Warehouse Space API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Warehouse API V1");
             });
         }
     }
