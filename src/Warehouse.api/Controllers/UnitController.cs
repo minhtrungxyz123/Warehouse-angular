@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using Warehouse.Common;
 using Warehouse.Model.Unit;
@@ -15,10 +16,13 @@ namespace Warehouse.api.Controllers
         #region Fields
 
         private readonly IUnitService _unitService;
+        private readonly ILogger<UnitController> _logger;
 
-        public UnitController(IUnitService unitService)
+        public UnitController(IUnitService unitService,
+            ILogger<UnitController> logger)
         {
             _unitService = unitService;
+            _logger = logger;
         }
 
         #endregion Fields
@@ -74,14 +78,17 @@ namespace Warehouse.api.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> Post([FromBody] UnitModel model)
         {
+            _logger.LogInformation("Begin Post API");
             var result = await _unitService.Create(model);
 
             if (result.Result > 0)
             {
+                _logger.LogInformation("End Post API - Success");
                 return RedirectToAction(nameof(Get), new { id = result.Id });
             }
             else
             {
+                _logger.LogInformation("End Post API - Failed");
                 return BadRequest(new ApiBadRequestResponse("Create unit failed"));
             }
         }

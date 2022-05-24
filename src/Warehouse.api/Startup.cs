@@ -15,6 +15,7 @@ using Warehouse.Data.EF;
 using Warehouse.Data.Entities;
 using Warehouse.Model.Unit;
 using Warehouse.Service;
+using Warehouse.Service.IdentityProfile;
 
 namespace Warehouse.api
 {
@@ -46,9 +47,10 @@ namespace Warehouse.api
                 options.Events.RaiseSuccessEvents = true;
             })
             .AddInMemoryApiResources(Config.Apis)
-            .AddInMemoryClients(Config.Clients)
+            .AddInMemoryClients(Configuration.GetSection("IdentityServer:Clients"))
             .AddInMemoryIdentityResources(Config.Ids)
             .AddAspNetIdentity<User>()
+            .AddProfileService<IdentityProfileService>()
             .AddDeveloperSigningCredential();
 
             services.Configure<IdentityOptions>(options =>
